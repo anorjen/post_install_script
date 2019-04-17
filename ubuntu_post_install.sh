@@ -84,11 +84,11 @@ else
 	         18 "Papirus-icon-theme" 			off
 		 19 "Arc Theme" 				off
 		 20 "Sakura" 					off
-		 #21 "Midnight Commander" 			off
-		 #22 "Pcmanfm" 					off
+		 21 "Midnight Commander" 			off
+		 22 "Pcmanfm" 					off
 		 23 "Caja" 					on
 		 24 "File-roller" 				on
-		 #25 "Engrampa" 				off
+		 25 "Engrampa" 					off
 		 26 "LibreOffice" 				off
 		 27 "Geany" 					off
 		 28 "speedcrunch" 				on
