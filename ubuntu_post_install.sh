@@ -96,6 +96,7 @@ else
 		 30 "My Configs & scripts" 			on
 		 31 "fonts-noto"				on
 		 32 "Debian touch_to_click"			off
+		 33 "Debian trim on"				off
 		 )
 		choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 		clear
@@ -301,6 +302,12 @@ else
 					  Option "Tapping" "on"
 					  EndSection' > /etc/X11/xorg.conf.d/40-libinput.conf
 				;;
+			33)
+				echo "Debian trim on"
+				echo '#!/bin/sh
+					# trim all mounted file systems which support it
+					/sbin/fstrim --all || true' > /etc/cron.weekly/fstrim
+				chmod +x /etc/cron.weekly/fstrim
 	    esac
 	done
 fi
