@@ -113,7 +113,7 @@ else
 				fi
 				echo $( funcInstallStatus i3)
 				echo $( funcInstallStatus i3lock)
-				echo $( funcInstallStatus i3blocs)
+				echo $( funcInstallStatus i3blocks)
 				echo $( funcInstallStatus suckless-tools)
 				;;
 
