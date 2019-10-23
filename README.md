@@ -14,6 +14,9 @@ post_install_script for debian or ubuntu
 
 
 ### scripts ###
+
 fehbg.sh - set random wallpaper from dir ~/Изображения/backgrounds/;
+
 lockscreen.sh - lock screen with i3lock;
+
 seltr.sh - translate sellected word show notify (hotkey Win + T, set in i3 config);
