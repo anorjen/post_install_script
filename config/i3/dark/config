@@ -57,8 +57,8 @@ bindsym $mod+Return exec sakura
 bindsym Mod1+x kill
 
 # start dmenu (a program launcher)
-#~ bindsym $mod+d exec dmenu_run
-bindsym $mod+d exec j4-dmenu-desktop --dmenu="dmenu -fn "NotoMono 8" -nb '#586e75' -nf '#fdf6e3' -sb '#6c71c4' -sf '#ffffff' -i"
+bindsym $mod+d exec dmenu_run
+# bindsym $mod+d exec j4-dmenu-desktop --dmenu="dmenu -fn "NotoMono 8" -nb '#586e75' -nf '#fdf6e3' -sb '#6c71c4' -sf '#ffffff' -i"
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.

@@ -160,7 +160,7 @@ else
 				#lm-sensors
 				#tempreture
 				echo $( funcInstallStatus lm-sensors)
-				sensors-detect --auto	
+				sensors-detect --auto &>/dev/null
 				;;
 			7)
 				#Dunst
@@ -271,16 +271,30 @@ else
 				;;
 			
 			30)
-				STATUS=`(tar -xzvf configs.tar.gz  -C /home/$username/ &>/dev/null && echo OK) || echo Fail`
-				echo -e "Copy configs to /home/$username : \e[$( setColor $STATUS)m$STATUS\e[0m"
-				# chown -R $username:$username /home/$username/.config
+				STATUS=`(wget -P /home/$username https://github.com/anorjen/post_install_script/archive/master.zip &>/dev/null && echo OK) || echo Fail`
+				if [ "$STATUS" = "OK" ]
+				then
+					STATUS=`(tar -xzvf /home/$username/master.zip -C /home/$username/ &>/dev/null && echo OK) || echo Fail`
+					if [ "$STATUS" = "OK" ]
+					then
+						mkdir -p /home/$username/.config
+						cp /home/$username/post_install_script-master/config/* /home/$username/.config/ &>/dev/null
+						cp /home/$username/.config/i3/dark/* /home/$username/.config/i3/ &>/dev/null
+						chmod +x /home/$username/.config/i3/*.sh &>/dev/null
+						rm -rf /home/$username/post_install_script-master
+					fi
+					rm -f /home/$username/master.zip
+				fi
+
+				# STATUS=`(tar -xzvf configs.tar.gz  -C /home/$username/ &>/dev/null && echo OK) || echo Fail`
+				# echo -e "Copy configs to /home/$username : \e[$( setColor $STATUS)m$STATUS\e[0m"
 
 				#~ cp /home/$username/.config/lightdm.conf /etc/lightdm/lightdm.conf
 				#~ chown root:root /etc/lightdm/lightdm.conf
 				#~ chmod 644 /etc/lightdm/lightdm.conf
 				
-				cp /home/$username/.config/i3/dark/* /home/$username/.config/i3/ &>/dev/null
-				chmod +x /home/$username/.config/i3/*.sh &>/dev/null
+				# cp /home/$username/.config/i3/dark/* /home/$username/.config/i3/ &>/dev/null
+				# chmod +x /home/$username/.config/i3/*.sh &>/dev/null
 				
 				#folder for wallpapers 
 				mkdir -p /home/$username/Изображения/backgrounds
