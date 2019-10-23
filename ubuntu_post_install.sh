@@ -21,41 +21,40 @@ if [[ $EUID -ne 0 ]]; then
    	echo "This script must be run as root" 
    	exit 1
 else
-	
-	username=`users | awk '{print $1}'`
-	echo $username
 
 	#OS detect
 	os_name=`cat /etc/*-release |grep ^ID=|cut -d"=" -f2`
 	echo $os_name
+
+	if [[ "$os_name" != "debian" && "$os_name" != "ubuntu" ]]
+	then
+		echo "Script works on Debian or Ubuntu only"
+		exit 1
+	fi
 	
+	username=`users | awk '{print $1}'`
+	echo $username
+
 	if [ "$os_name" = "debian" ]
 	then
 		echo -n "User name for sudo : "
 		echo $username
 		echo ""
 
-		##============
-		## sourcelist
-		##============
-		#cp /etc/apt/sources.list /etc/apt/sources.list_old
+		echo "add contrib non-free to sources.list\n"
 
-		#echo "deb http://ftp.ru.debian.org/debian/ stretch main non-free contrib" > /etc/apt/sources.list
-		#echo "deb-src http://ftp.ru.debian.org/debian/ stretch main non-free contrib" >> /etc/apt/sources.list
-		#echo "deb http://ftp.ru.debian.org/debian/ stretch-backports main contrib non-free" >> /etc/apt/sources.list
+		# sources.list		
+		cp /etc/apt/sources.list /etc/apt/sources.list_old
+		sed -i 's/main/main contrib non-free/g' /etc/apt/sources.list
 
-		#apt update
+		# echo "deb http://ftp.ru.debian.org/debian/ stretch main non-free contrib" > /etc/apt/sources.list
+		# echo "deb-src http://ftp.ru.debian.org/debian/ stretch main non-free contrib" >> /etc/apt/sources.list
+		# echo "deb http://ftp.ru.debian.org/debian/ stretch-backports main contrib non-free" >> /etc/apt/sources.list
 	
 		#sudo
-		apt install -y sudo
+		echo $( funcInstallStatus sudo)
 		usermod -a -G sudo $username
 		#echo "%sudo   ALL=(ALL:ALL) ALL" >> /etc/sudoers
-	fi
-
-	if [[ "$os_name" != "debian" && "$os_name" != "ubuntu" ]]
-	then
-		echo "Script works on Debian or Ubuntu only"
-		exit 1
 	fi
 
 	#Update and Upgrade
@@ -66,45 +65,45 @@ else
 	cmd=(dialog --separate-output --checklist "Please Select Software you want to install:" 22 76 16)
 	options=(1 "Desktop(X+i3wm)" 				on    # any option can be set to default to "on"
 	         2 "Network Manager"				on
-	         3 "Compton" 					on
-	         4 "Utils(needs for scripts)" 			on
-	         5 "Gsimplecal" 				on
-	         6 "Lm-sensors"	 				on
-	         7 "Dunst" 					on
+	         3 "Compton" 						on
+	         4 "Utils(needs for scripts)" 		on
+	         5 "Gsimplecal" 					on
+	         6 "Lm-sensors"	 					on
+	         7 "Dunst" 							on
 	         8 "Xfce4-appfinder" 				off
-	         9 "Ubuntu Restricted Extras" 			off
+	         9 "Ubuntu Restricted Extras" 		off
 	         10 "VLC Media Player" 				off
-	         11 "Clipit" 					on
-	         12 "Lightdm-gtk-greeter-settings" 		off
-	         13 "Software-properties-gtk" 			off
-	         14 "Ubuntu-drivers-common" 			off
+	         11 "Clipit" 						on
+	         12 "Lightdm-gtk-greeter-settings"	off
+	         13 "Software-properties-gtk" 		off
+	         14 "Ubuntu-drivers-common" 		off
 	         15 "Xfce4-power-manager" 			on
-	         16 "Lxappearance" 				off
-	         17 "Pulseaudio" 				off
+	         16 "Lxappearance" 					off
+	         17 "Pulseaudio" 					off
 	         18 "Papirus-icon-theme" 			off
-		 19 "Arc Theme" 				off
-		 20 "Sakura" 					off
-		 21 "Midnight Commander" 			off
-		 22 "Pcmanfm" 					off
-		 23 "Caja" 					on
-		 24 "File-roller" 				on
-		 25 "Engrampa" 					off
-		 26 "LibreOffice" 				off
-		 27 "Geany" 					off
-		 28 "speedcrunch" 				on
-		 29 "Firefox"					on
-		 30 "My Configs & scripts" 			on
-		 31 "fonts-noto"				on
-		 32 "Debian touch_to_click"			off
-		 33 "Debian trim on"				off
+		 	 19 "Arc Theme" 					off
+		 	 20 "Sakura" 						off
+		 	 21 "Midnight Commander" 			off
+		 	 22 "Pcmanfm" 						off
+		 	 23 "Caja" 							on
+			 24 "File-roller" 					on
+			 25 "Engrampa" 						off
+			 26 "LibreOffice" 					off
+			 27 "Geany" 						off
+			 28 "speedcrunch" 					on
+			 29 "Firefox"						on
+			 30 "My Configs & scripts" 			on
+			 31 "fonts-noto"					on
+			 32 "Debian touch_to_click"			off
+			 33 "Debian trim on"				off
 		 )
 		choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 		clear
 		for choice in $choices
 		do
 		    case $choice in
-	        	1)
-	            		#Install Desktop
+	        1)
+	            #Install Desktop
 				xorg=`dpkg --list |grep " xorg " | wc -l`
 				if [ $xorg -eq 0 ]
 				then
@@ -118,12 +117,12 @@ else
 				;;
 
 			2)
-			    	#Install Network Manager
+			    #Install Network Manager
 				echo $( funcInstallStatus network-manager)
 				echo $( funcInstallStatus network-manager-gnome)
-	            		;;
+	            ;;
 	            
-    			3)
+    		3)
 				#Install Compton
 				echo $( funcInstallStatus compton)
 				;;
@@ -272,20 +271,20 @@ else
 				;;
 			
 			30)
-				echo "Copy configs to /home/$username"
-				tar -xzvf configs.tar.gz  -C /home/$username/ 
-				chown -R $username:$username /home/$username/.config
+				STATUS=`(tar -xzvf configs.tar.gz  -C /home/$username/ &>/dev/null && echo OK) || echo Fail`
+				echo -e "Copy configs to /home/$username : \e[$( setColor $STATUS)m$STATUS\e[0m"
+				# chown -R $username:$username /home/$username/.config
 
 				#~ cp /home/$username/.config/lightdm.conf /etc/lightdm/lightdm.conf
 				#~ chown root:root /etc/lightdm/lightdm.conf
 				#~ chmod 644 /etc/lightdm/lightdm.conf
 				
-				cp /home/$username/.config/i3/dark/* /home/$username/.config/i3/
-				chmod +x /home/$username/.config/i3/*.sh
+				cp /home/$username/.config/i3/dark/* /home/$username/.config/i3/ &>/dev/null
+				chmod +x /home/$username/.config/i3/*.sh &>/dev/null
 				
 				#folder for wallpapers 
 				mkdir -p /home/$username/Изображения/backgrounds
-				chown -R $username:$username /home/$username
+				chown -R $username:$username /home/$username &>/dev/null
 				;;
 			31)
 				echo $( funcInstallStatus fonts-noto)
@@ -308,6 +307,7 @@ else
 					# trim all mounted file systems which support it
 					/sbin/fstrim --all || true' > /etc/cron.weekly/fstrim
 				chmod +x /etc/cron.weekly/fstrim
+				;;
 	    esac
 	done
 fi

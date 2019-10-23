@@ -1,0 +1,72 @@
+[global] # Configuración global
+    font = "Noto Mono 10"
+    # Permitir etiquetas html
+    allow_markup = yes
+    # El formato de las notificaciones,
+    # %s - sumario
+    # %p - progreso
+    # %b - cuerpo del mensaje
+    format = "<b>%s %p</b>\n%b"
+    # Ordenar mensajes por prioridad
+    sort = yes
+    # Mostrar cuantas not. hay ocultas
+    indicate_hidden = true
+    idle_threshold = 0
+    # Tamaño de  la notificación
+    geometry = "225x5-12+30"
+    #geometry = "300x5-30+20"
+    alignment = center
+    show_age_threshold = 60
+    sticky_history = yes
+    follow = mouse
+    word_wrap = yes
+    separator_height = 2
+    padding = 10
+    horizontal_padding = 10
+    #separator_color = frame
+    separator_color = #000000
+    #startup_notification = true
+
+# Diseño del borde de la notificación
+[frame]
+    width = 1
+    #color = "#100C08"
+    color = "#000000"
+
+# Atajos de teclado
+[shortcuts]
+    close = ctrl+space
+    close_all = ctrl+shift+space
+    history = ctrl+grave
+    context = ctrl+shift+period
+
+# Estilo para las notificaciones de baja prioridad
+[urgency_low]
+    background = "#6c71c4"
+    #foreground = "#E6E5CA"
+    foreground = "#ffffff"
+    timeout = 5
+
+# Estilo para las notificaciones de prioridad normal
+[urgency_normal]
+    background = "#6c71c4"
+    #foreground = "#2d2d2d"
+    foreground = "#ffffff"
+    timeout = 10
+
+# Estilo para las notificaciones de alta prioridad
+[urgency_critical]
+    background = "#7cb342"
+    foreground = "#100C08"
+    timeout = 0
+
+# Se pueden personalizar notificciones en función de su texto
+[test]
+    summary = "*test*"
+    background="#ff9800"
+
+# Y también se personalizan por aplicación
+#~ [signed_on]
+    #~ appname = Pidgin
+    #~ summary = "*signed on*"
+    #~ urgency = low
