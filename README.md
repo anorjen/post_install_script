@@ -4,9 +4,12 @@ post_install_script for debian or ubuntu
 0) install base system
 1) set network connection
 2) on debian:
-  $>  su -
+
+  $>  su -  
   $>  ./post_install_script
-   on ubuntu:
+  
+  on ubuntu:
+  
   $> sudo ./post_install_script
 
 
