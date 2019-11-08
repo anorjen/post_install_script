@@ -297,7 +297,7 @@ else
 				# chmod +x /home/$username/.config/i3/*.sh &>/dev/null
 				
 				#folder for wallpapers 
-				mkdir -p /home/$username/Изображения/backgrounds
+				mkdir -p /home/$username/Pictures/backgrounds
 				chown -R $username:$username /home/$username &>/dev/null
 				;;
 			31)
