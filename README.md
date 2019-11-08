@@ -20,3 +20,5 @@ fehbg.sh - set random wallpaper from dir ~/Изображения/backgrounds/;
 lockscreen.sh - lock screen with i3lock;
 
 seltr.sh - translate sellected word show notify (hotkey Win + T, set in i3 config);
+
+![Image](https://github.com/anorjen/post_install_script/raw/develop/img/screen.png)

@@ -281,7 +281,7 @@ else
 						mkdir -p /home/$username/.config
 						cp -r /home/$username/post_install_script-master/config/* /home/$username/.config/
 						cp /home/$username/.config/i3/dark/* /home/$username/.config/i3/
-						chmod +x /home/$username/.config/i3/*.sh
+						chmod +x /home/$username/.config/i3/scripts/*.sh
 						
 						rm -rf /home/$username/post_install_script-master/
 					fi

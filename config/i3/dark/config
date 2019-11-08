@@ -20,8 +20,8 @@ set $WS6   6
 set $WS7   7
 set $WS8   8
 set $WS9   9
-#set $WS0   10
-set $WS0 
+set $WS0   10
+#set $WS0 
 #
 
 
@@ -57,12 +57,13 @@ bindsym $mod+Return exec sakura
 bindsym Mod1+x kill
 
 # start dmenu (a program launcher)
-bindsym $mod+d exec dmenu_run
-# bindsym $mod+d exec j4-dmenu-desktop --dmenu="dmenu -fn "NotoMono 8" -nb '#586e75' -nf '#fdf6e3' -sb '#6c71c4' -sf '#ffffff' -i"
+#bindsym $mod+d exec dmenu_run
+#bindsym $mod+d exec j4-dmenu-desktop --dmenu="dmenu -fn "NotoMono 8" -nb '#586e75' -nf '#fdf6e3' -sb '#6c71c4' -sf '#ffffff' -i"
+
 # There also is the (new) i3-dmenu-desktop which only displays applications
 # shipping a .desktop file. It is a wrapper around dmenu, so you need that
 # installed.
-#bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
+bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
 #bindsym $mod+j focus left
@@ -193,37 +194,10 @@ bar
 
 }
 
-
 client.focused           #6c71c4 #6c71c4 #fdf6e3 #6c71c4
 client.focused_inactive  #073642 #073642 #eee8d5 #6c71c4
 client.unfocused         #073642 #073642 #93a1a1 #586e75
 client.urgent            #d33682 #d33682 #fdf6e3 #dc322f
-
-#scratchpad
-bindsym $mod+Shift+minus move scratchpad
-bindsym $mod+minus scratchpad show
-
-exec --no-startup-id compton --config  ~/.config/i3/compton.conf
-#exec --no-startup-id  redshift-gtk
-#exec --no-startup-id   notify-osd
-#exec_always --no-startup-id dunst
-
-#wallpapers
-exec --no-startup-id  ~/.config/i3/fehbg.sh
-
-#tray
-exec --no-startup-id pasystray
-exec --no-startup-id gxkb
-exec --no-startup-id xfce4-power-manager
-exec --no-startup-id clipit
-exec --no-startup-id nm-applet --tray
-
-#calendar 
-bindsym $mod+c exec --no-startup-id gsimplecal
-
-# lock screen
-bindsym  $mod+l exec ~/.config/i3/lockscreen.sh
-exec xautolock -time 10 -locker ~/.config/i3/lockscreen.sh &
 
 #exit
 set $Locker i3lock -c 008B8B && sleep 1
@@ -240,17 +214,54 @@ mode "$mode_system" {
     bindsym Return mode "default"
     bindsym Escape mode "default"
 }
+
 bindsym $mod+End mode "$mode_system"
 
+	#################
+    ### Autostart ###
+	#################
+exec --no-startup-id compton --config  ~/.config/i3/compton.conf
+#exec --no-startup-id  redshift-gtk
+#exec --no-startup-id   notify-osd
+#exec_always --no-startup-id dunst
+  # wallpapers
+exec --no-startup-id  ~/.config/i3/scripts/fehbg.sh
+#exec --no-startup-id  ~/.config/i3/scripts/get_bing_pic.sh
+  # tray
+exec --no-startup-id pasystray
+exec --no-startup-id gxkb
+exec --no-startup-id xfce4-power-manager
+exec --no-startup-id clipit
+exec --no-startup-id nm-applet --tray
+ # lock screen
+exec xautolock -time 10 -locker ~/.config/i3/scripts/lockscreen.sh &
+
+    ################
+    ### Hot Keys ###
+    ################
+  # scratchpad
+bindsym $mod+Shift+minus move scratchpad
+bindsym $mod+minus scratchpad show
+  # calendar 
+bindsym $mod+c exec --no-startup-id gsimplecal
+  # lock screen
+bindsym  $mod+l exec ~/.config/i3/scripts/lockscreen.sh
+  # translate
+bindsym  $mod+t exec ~/.config/i3/scripts/seltr.sh
+  # app launcher
+bindsym  $mod+Shift+d exec --no-startup-id  xfce4-appfinder
+
+	################
+    ### Floating ###
+	################
 for_window  [class="(?i)speedcrunch"] floating enable
+for_window  [class="(?i)xfce4-appfinder"] floating enable
+
+	###############
+	### Replace ###
+	###############
 for_window  [class="(?i)audacious"] move workspace $WS0
 for_window  [class="(?i)smplayer"] move workspace $WS0
 
-#translate
-bindsym  $mod+t exec ~/.config/i3/seltr.sh
-
-#app launcher
-bindsym  $mod+Shift+d exec --no-startup-id  xfce4-appfinder
-for_window  [class="(?i)xfce4-appfinder"] floating enable
 
 workspace_layout tabbed
