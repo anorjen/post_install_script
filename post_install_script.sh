@@ -150,6 +150,9 @@ else
 				
 				#install fonts
 				echo $( funcInstallStatus fonts-font-awesome)
+
+				#install gpicview
+				echo $( funcInstallStatus gpicview)
 				;;
 
 			5)
