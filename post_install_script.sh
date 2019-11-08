@@ -295,7 +295,13 @@ else
 				cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm_old.conf
 				cp /home/$username/.config/lightdm.conf /etc/lightdm/lightdm.conf
 				cp /etc/lightdm/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter_old.conf
-				echo -e "[greeter]\nbackground = /home/dmitry/Pictures/backgrounds/login-background.jpg\ntheme-name = Arc-Dark\nicon-theme-name = Papirus\nuser-background = false" > /etc/lightdm/lightdm-gtk-greeter.conf
+				echo -e "[greeter]
+						\rbackground = /home/$username/Pictures/backgrounds/login-background.jpg
+						\rtheme-name = Arc-Dark
+						\ricon-theme-name = Papirus
+						\ruser-background = false
+						\rindicators = ~host;~spacer;~clock;~spacer;~layout;~session;~power
+						\rscreensaver-timeout = 10\n" > /etc/lightdm/lightdm-gtk-greeter.conf
 				chmod 644 /etc/lightdm/lightdm.conf
 				chmod 644 /etc/lightdm/lightdm-gtk-greeter.conf
 				
@@ -311,19 +317,19 @@ else
 				echo "Debian touch_to_click on"
 				mkdir -p /etc/X11/xorg.conf.d
 				touch /etc/X11/xorg.conf.d/40-libinput.conf
-				echo 'Section "InputClass"
-					  Identifier "libinput touchpad catchall"
-					  MatchIsTouchpad "on"
-					  MatchDevicePath "/dev/input/event*"
-					  Driver "libinput"
-					  Option "Tapping" "on"
-					  EndSection' > /etc/X11/xorg.conf.d/40-libinput.conf
+				echo -e 'Section "InputClass"
+					  \rIdentifier "libinput touchpad catchall"
+					  \rMatchIsTouchpad "on"
+					  \rMatchDevicePath "/dev/input/event*"
+					  \rDriver "libinput"
+					  \rOption "Tapping" "on"
+					  \rEndSection\n' > /etc/X11/xorg.conf.d/40-libinput.conf
 				;;
 			33)
 				echo "Debian trim on"
-				echo '#!/bin/sh
-					# trim all mounted file systems which support it
-					/sbin/fstrim --all || true' > /etc/cron.weekly/fstrim
+				echo -e '#!/bin/sh
+					\r# trim all mounted file systems which support it
+					\r/sbin/fstrim --all || true' > /etc/cron.weekly/fstrim
 				chmod +x /etc/cron.weekly/fstrim
 				;;
 	    esac
