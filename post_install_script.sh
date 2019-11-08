@@ -301,6 +301,7 @@ else
 				
 				#folder for wallpapers 
 				mkdir -p /home/$username/Pictures/backgrounds
+				mkdir -p /home/$username/Pictures/screenshots
 				chown -R $username:$username /home/$username &>/dev/null
 				;;
 			31)
