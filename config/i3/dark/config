@@ -65,10 +65,10 @@ bindsym $mod+d exec dmenu_run
 #bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+#bindsym $mod+j focus left
+#bindsym $mod+k focus down
+#bindsym $mod+l focus up
+#bindsym $mod+semicolon focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -222,14 +222,14 @@ exec --no-startup-id nm-applet --tray
 bindsym $mod+c exec --no-startup-id gsimplecal
 
 # lock screen
-bindsym  $mod+Control+l exec ~/.config/i3/lockscreen.sh
+bindsym  $mod+l exec ~/.config/i3/lockscreen.sh
 exec xautolock -time 10 -locker ~/.config/i3/lockscreen.sh &
 
 #exit
-set $Locker i3lock && sleep 1
+set $Locker i3lock -c 008B8B && sleep 1
 
-#set $mode_system System (l) Logout, (s) Suspend,  (r) Reboot, (Shift+s) Shutdown
-set $mode_system :: (L) Завершить_сеанс:: (S) Ждущий_режим:: (R) Перезагрузка:: (Shift+S) Завершение_работы
+set $mode_system System (l) Logout, (s) Suspend,  (r) Reboot, (Shift+s) Shutdown
+#set $mode_system :: (L) Завершить_сеанс:: (S) Ждущий_режим:: (R) Перезагрузка:: (Shift+S) Завершение_работы
 mode "$mode_system" {
     bindsym l exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"

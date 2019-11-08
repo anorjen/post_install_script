@@ -70,32 +70,32 @@ else
 	         5 "Gsimplecal" 					on
 	         6 "Lm-sensors"	 					on
 	         7 "Dunst" 							on
-	         8 "Xfce4-appfinder" 				off
+	         8 "Xfce4-appfinder" 				on
 	         9 "Ubuntu Restricted Extras" 		off
 	         10 "VLC Media Player" 				off
 	         11 "Clipit" 						on
-	         12 "Lightdm-gtk-greeter-settings"	off
+	         12 "Lightdm-gtk-greeter-settings"	on
 	         13 "Software-properties-gtk" 		off
 	         14 "Ubuntu-drivers-common" 		off
 	         15 "Xfce4-power-manager" 			on
-	         16 "Lxappearance" 					off
-	         17 "Pulseaudio" 					off
-	         18 "Papirus-icon-theme" 			off
-		 	 19 "Arc Theme" 					off
-		 	 20 "Sakura" 						off
-		 	 21 "Midnight Commander" 			off
-		 	 22 "Pcmanfm" 						off
-		 	 23 "Caja" 							on
+	         16 "Lxappearance" 					on
+	         17 "Pulseaudio" 					on
+	         18 "Papirus-icon-theme" 			on
+		 	 19 "Arc Theme" 					on
+		 	 20 "Sakura" 						on
+		 	 21 "Midnight Commander" 			on
+		 	 22 "Pcmanfm" 						on
+		 	 23 "Caja" 							off
 			 24 "File-roller" 					on
 			 25 "Engrampa" 						off
 			 26 "LibreOffice" 					off
-			 27 "Geany" 						off
+			 27 "Geany" 						on
 			 28 "speedcrunch" 					on
 			 29 "Firefox"						on
 			 30 "My Configs & scripts" 			on
 			 31 "fonts-noto"					on
-			 32 "Debian touch_to_click"			off
-			 33 "Debian trim on"				off
+			 32 "Debian: touch_to_click"		off
+			 33 "Debian: trim on"				off
 		 )
 		choices=$("${cmd[@]}" "${options[@]}" 2>&1 >/dev/tty)
 		clear
@@ -271,30 +271,30 @@ else
 				;;
 			
 			30)
-				STATUS=`(wget -P /home/$username https://github.com/anorjen/post_install_script/archive/master.zip &>/dev/null && echo OK) || echo Fail`
+				STATUS=`(wget -P /home/$username/ https://github.com/anorjen/post_install_script/archive/master.zip &>/dev/null && echo OK) || echo Fail`
 				if [ "$STATUS" = "OK" ]
 				then
-					STATUS=`(tar -xzvf /home/$username/master.zip -C /home/$username/ &>/dev/null && echo OK) || echo Fail`
+					STATUS=`(unzip /home/$username/master.zip -d /home/$username/ &>/dev/null && echo OK) || echo Fail`
+					echo -e "Copy configs to /home/$username : \e[$( setColor $STATUS)m$STATUS\e[0m"
 					if [ "$STATUS" = "OK" ]
 					then
 						mkdir -p /home/$username/.config
-						cp /home/$username/post_install_script-master/config/* /home/$username/.config/ &>/dev/null
-						cp /home/$username/.config/i3/dark/* /home/$username/.config/i3/ &>/dev/null
-						chmod +x /home/$username/.config/i3/*.sh &>/dev/null
-						rm -rf /home/$username/post_install_script-master
+						cp -r /home/$username/post_install_script-master/config/* /home/$username/.config/
+						cp /home/$username/.config/i3/dark/* /home/$username/.config/i3/
+						chmod +x /home/$username/.config/i3/*.sh
+						
+						rm -rf /home/$username/post_install_script-master/
 					fi
 					rm -f /home/$username/master.zip
 				fi
 
-				# STATUS=`(tar -xzvf configs.tar.gz  -C /home/$username/ &>/dev/null && echo OK) || echo Fail`
-				# echo -e "Copy configs to /home/$username : \e[$( setColor $STATUS)m$STATUS\e[0m"
-
-				#~ cp /home/$username/.config/lightdm.conf /etc/lightdm/lightdm.conf
-				#~ chown root:root /etc/lightdm/lightdm.conf
-				#~ chmod 644 /etc/lightdm/lightdm.conf
-				
-				# cp /home/$username/.config/i3/dark/* /home/$username/.config/i3/ &>/dev/null
-				# chmod +x /home/$username/.config/i3/*.sh &>/dev/null
+				#lightdm config
+				cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm_old.conf
+				cp /home/$username/.config/lightdm.conf /etc/lightdm/lightdm.conf
+				cp /etc/lightdm/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter_old.conf
+				echo -e "[greeter]\nbackground = /home/dmitry/Pictures/backgrounds/login-background.jpg\ntheme-name = Arc-Dark\nicon-theme-name = Papirus\nuser-background = false" > /etc/lightdm/lightdm-gtk-greeter.conf
+				chmod 644 /etc/lightdm/lightdm.conf
+				chmod 644 /etc/lightdm/lightdm-gtk-greeter.conf
 				
 				#folder for wallpapers 
 				mkdir -p /home/$username/Pictures/backgrounds
