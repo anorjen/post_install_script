@@ -15,8 +15,14 @@ post_install_script for debian or ubuntu
 
 ### scripts ###
 
-fehbg.sh - set random wallpaper from dir ~/Изображения/backgrounds/;
+fehbg.sh - set random wallpaper from dir ~/Pictures/backgrounds/;
 
-lockscreen.sh - lock screen with i3lock;
+get_bing_pic.sh - download picture from bing.com, put to ~/Pictures/backgrounds/ and set as wallpaper;
+
+lockscreen.sh - blur screen and lock screen with i3lock (hotkey Win + L);
 
 seltr.sh - translate sellected word show notify (hotkey Win + T, set in i3 config);
+
+runlauncher.sh - start xfce4-appfinder, if it dont running;
+
+![Image](https://github.com/anorjen/post_install_script/raw/develop/img/screen.png)
