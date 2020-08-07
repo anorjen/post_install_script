@@ -72,7 +72,7 @@ else
 	fi
 
 	apt install dialog
-	cmd=(dialog --separate-output --checklist "Please Select Software you want to install:" 22 76 16)
+	cmd=(dialog --separate-output --checklist "Please Select Software you want to install:" 40 76 30)
 	options=(	1 "Desktop(X+i3wm)"								on    # any option can be set to default to "on"
 				2 "Network Manager"								on
 				3 "Sakura"										on
