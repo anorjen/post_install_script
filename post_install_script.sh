@@ -25,13 +25,13 @@ function funcInstallStatus {
 
 
 if [[ $EUID -ne 0 ]]; then
-   	echo "This script must be run as root"
-   	exit 1
+	echo "This script must be run as root"
+	exit 1
 else
 
 	#OS detect
 	os_name=`cat /etc/*-release |grep ^ID=|cut -d"=" -f2`
-	echo $os_name
+	echo -e "You OS is \e[1;36m$os_name\e[0m"
 
 	if [[ "$os_name" != "debian" && "$os_name" != "ubuntu" ]]
 	then
@@ -40,7 +40,10 @@ else
 	fi
 
 	username=`users | awk '{print $1}'`
-	echo $username
+	echo -e "You are \e[1;36m$username\e[0m"
+
+	echo -e -n "Continue for user \e[1;36m$username\e[0m? (Y/N): "
+	read confirm && [[ $confirm == [yY] || $confirm == [yY][eE][sS] ]] || exit 1
 
 	if [[ $TESTING -eq 0 ]]
 	then
@@ -53,12 +56,16 @@ else
 			echo "add contrib non-free to sources.list\n"
 
 			# sources.list
-			cp /etc/apt/sources.list /etc/apt/sources.list_old
-			sed -i 's/main/main contrib non-free/g' /etc/apt/sources.list
+			cp /etc/apt/sources.list /etc/apt/sources.list_old 2>/dev/null
 
-			# echo "deb http://ftp.ru.debian.org/debian/ stretch main non-free contrib" > /etc/apt/sources.list
-			# echo "deb-src http://ftp.ru.debian.org/debian/ stretch main non-free contrib" >> /etc/apt/sources.list
-			# echo "deb http://ftp.ru.debian.org/debian/ stretch-backports main contrib non-free" >> /etc/apt/sources.list
+			if [[ -e /etc/apt/sources.list ]]
+			then
+				sed -i 's/main/main contrib non-free/g' /etc/apt/sources.list
+			else
+				echo "deb http://deb.debian.org/debian/ stable main non-free contrib" > /etc/apt/sources.list
+				echo "deb http://security.debian.org/debian-security stable/updates main contrib non-free" >> /etc/apt/sources.list
+				echo "deb http://deb.debian.org/debian/ stable-updates main contrib non-free" >> /etc/apt/sources.list
+			fi
 
 			#sudo
 			echo $( funcInstallStatus sudo)
@@ -251,37 +258,20 @@ else
 				echo $( funcInstallStatus git)
 				if [[ $TESTING -eq 0 ]]
 				then
-					# STATUS=`(wget -P /home/$username/ https://github.com/anorjen/post_install_script/archive/master.zip &>/dev/null && echo OK) || echo Fail`
-					# if [ "$STATUS" = "OK" ]
-					# then
-					# 	STATUS=`(unzip /home/$username/master.zip -d /home/$username/ &>/dev/null && echo OK) || echo Fail`
-					# 	echo -e "Copy configs to /home/$username : \e[$( setColor $STATUS)m$STATUS\e[0m"
-					# 	if [ "$STATUS" = "OK" ]
-					# 	then
-					# 		mkdir -p /home/$username/.config
-					# 		cp -r /home/$username/post_install_script-master/config/* /home/$username/.config/
-					# 		cp /home/$username/.config/i3/dark/* /home/$username/.config/i3/
-					# 		chmod +x /home/$username/.config/i3/scripts/*.sh
-
-					# 		rm -rf /home/$username/post_install_script-master/
-					# 	fi
-					# 	rm -f /home/$username/master.zip
-					# fi
-
-					STATUS=`(git clone --recursive https://github.com/anorjen/post_install_script.git $HOME/POST_INSTALL &>/dev/null && echo OK) || echo Fail`
+					STATUS=`(git clone --recursive https://github.com/anorjen/post_install_script.git /home/$username/POST_INSTALL &>/dev/null && echo OK) || echo Fail`
 					if [ "$STATUS" = "OK" ]
 					then
 						echo -e "Copy configs to /home/$username : \e[$( setColor $STATUS)m$STATUS\e[0m"
-						mkdir -p $HOME/.config
-						cp -r $HOME/POST_INSTALL/config/* $HOME/.config/
-						chmod +x $HOME/.config/i3/scripts/*.sh
+						mkdir -p /home/$username/.config
+						cp -r /home/$username/POST_INSTALL/config/* /home/$username/.config/
+						chmod +x /home/$username/.config/i3/scripts/*.sh
 					fi
 
 					#lightdm config
-					cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm_old.conf
-					cp $HOME/.config/lightdm.conf /etc/lightdm/lightdm.conf
+					cp /etc/lightdm/lightdm.conf /etc/lightdm/lightdm_old.conf 2>/dev/null
+					cp /home/$username/.config/lightdm.conf /etc/lightdm/lightdm.conf
 
-					cp /etc/lightdm/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter_old.conf
+					cp /etc/lightdm/lightdm-gtk-greeter.conf /etc/lightdm/lightdm-gtk-greeter_old.conf 2>/dev/null
 					echo -e "[greeter]
 							\rbackground = /home/$username/Pictures/backgrounds/login-background.jpg
 							\rtheme-name = Arc-Dark
